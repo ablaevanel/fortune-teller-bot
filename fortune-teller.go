@@ -4,10 +4,12 @@ import (
 	"flag"
 	"log"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"github.com/joho/godotenv"
 )
 
 var r *rand.Rand
@@ -19,7 +21,7 @@ type FortuneBot struct {
 }
 
 func New() (*FortuneBot, error) {
-	bot, err := tgbotapi.NewBotAPI(mustToken())
+	bot, err := tgbotapi.NewBotAPI(os.Getenv("TOKEN"))
 	if err != nil {
 		return nil, err
 	}
@@ -139,6 +141,7 @@ func mustToken() string {
 }
 
 func main() {
+	_ = godotenv.Load()
 	f, err := New()
 	if err != nil {
 		log.Fatalf("error connecting to Telegram: %s", err.Error())
